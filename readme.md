@@ -128,6 +128,18 @@ test_64.jai          JPEG AI encoded file produced from the PNG input
 test_64_decoded.png  PNG reconstructed by the JPEG AI reference decoder
 ```
 
+Original synthetic PNG input:
+
+![Original synthetic PNG input](examples/test_64/test_64.png)
+
+Reconstructed PNG output after JPEG AI decoding:
+
+![Reconstructed PNG output](examples/test_64/test_64_decoded.png)
+
+The encoded `.jai` file is included as a binary JPEG AI codestream:
+
+[`test_64.jai`](examples/test_64/test_64.jai)
+
 The original PNG is a simple synthetic RGB gradient. It is deliberately small and visually simple, because its purpose is not to demonstrate compression quality. Its purpose is to provide a minimal known-good example of the reference workflow: PNG input, JAI codestream, and reconstructed PNG output.
 
 The same files can be recreated locally after installation by running:
