@@ -1,1 +1,120 @@
 # JPEG AI WSL Tools
+
+Practical helper scripts for installing and testing the official JPEG AI reference software under Windows 11 + WSL2 + Debian or Ubuntu with an NVIDIA GPU.
+
+This repository does **not** contain the JPEG AI reference software itself. The installer clones the official upstream repository from:
+
+```text
+https://gitlab.com/wg1/jpeg-ai/jpeg-ai-reference-software.git
+```
+
+The workflow is intentionally practical rather than elegant. The current JPEG AI ecosystem is still closer to a research and reference-software environment than to a consumer-ready codec package.
+
+## What this repository provides
+
+```text
+install_jpeg_ai_wsl.sh              Install dependencies, Miniconda, and JPEG AI reference software
+scripts/smoke_test.sh               Create a tiny PNG and test encode/decode
+scripts/jpg2jai_35.sh               Convert a JPEG or other image to JAI with a 35 percent size budget
+docs/blog_section_installation.md   Blog-style explanation of the installation workflow
+docs/troubleshooting.md             Notes for common WSL, CUDA, Conda, and PyTorch issues
+```
+
+## Expected environment
+
+This workflow was prepared for:
+
+```text
+Windows 11
+WSL2
+Debian or Ubuntu inside WSL
+NVIDIA GPU visible from WSL through nvidia-smi
+Miniconda-based Python environment
+```
+
+It has been shaped around an NVIDIA RTX/A1000-class WSL setup, but it is not specific to that exact GPU model. The important condition is that CUDA is visible inside WSL.
+
+Before running the installer, check from Windows PowerShell:
+
+```powershell
+wsl -l -v
+```
+
+The Linux distribution should be WSL version 2.
+
+Then check inside WSL:
+
+```bash
+nvidia-smi
+```
+
+If `nvidia-smi` works inside WSL, the GPU layer is probably ready.
+
+## Quick start
+
+Clone this repository inside WSL:
+
+```bash
+git clone https://github.com/tomasgal/jpeg-ai-wsl-tools.git
+cd jpeg-ai-wsl-tools
+```
+
+Run the installer:
+
+```bash
+chmod +x install_jpeg_ai_wsl.sh
+./install_jpeg_ai_wsl.sh
+```
+
+After installation, run the smoke test:
+
+```bash
+bash scripts/smoke_test.sh
+```
+
+If the smoke test succeeds, the official JPEG AI reference software should be available at:
+
+```text
+~/jpeg-ai-reference-software
+```
+
+## Convert a JPEG-like input to JAI with a 35 percent budget
+
+The official reference encoder expects PNG input. The wrapper script therefore converts the input image to a PNG raster first, encodes that PNG to `.jai`, decodes it back to PNG, and also produces a distribution-friendly reconstructed JPEG.
+
+Copy or place your image in the JPEG AI reference repository, for example:
+
+```bash
+cp ~/Pictures/001.jpg ~/jpeg-ai-reference-software/
+cd ~/jpeg-ai-reference-software
+```
+
+Then run:
+
+```bash
+~/jpeg-ai-wsl-tools/scripts/jpg2jai_35.sh 001.jpg
+```
+
+Outputs are written to:
+
+```text
+~/jpeg-ai-reference-software/out
+```
+
+Typical outputs:
+
+```text
+001_ratio0_35_bppXX.jai
+001_ratio0_35_bppXX_reconstructed.png
+001_ratio0_35_bppXX_reconstructed.jpg
+```
+
+The script searches from higher to lower quality and chooses the first setting whose `.jai` file fits within 35 percent of the original input file size.
+
+## Important limitation
+
+This workflow does not directly recompress the original JPEG bitstream into JPEG AI. It converts the image to a PNG raster first, because the reference encoder expects PNG input. This is technically correct for the current reference workflow, but it also means that results should be interpreted carefully when comparing against highly optimized mobile JPEG files.
+
+## License note
+
+This repository contains helper scripts only. The upstream JPEG AI reference software is governed by its own licensing and distribution terms.
