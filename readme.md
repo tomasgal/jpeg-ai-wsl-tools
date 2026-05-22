@@ -10,6 +10,12 @@ https://gitlab.com/wg1/jpeg-ai/jpeg-ai-reference-software.git
 
 The workflow is intentionally practical rather than elegant. The current JPEG AI ecosystem is still closer to a research and reference-software environment than to a consumer-ready codec package.
 
+## Project context and authorship
+
+This repository was created by **Tomas Gal** as part of a practical exploration of JPEG AI, neural image compression, and GPU-enabled experimentation under WSL. Tomas Gal works in Slovakia in the academic environment of informatics, cognitive science, and AI ethics, with a broader interest in responsible artificial intelligence, digital technologies, and the social implications of computational systems.
+
+The repository was developed in collaboration with **ChatGPT, GPT-5.5 Thinking**, which assisted with structuring the workflow, drafting the documentation, preparing shell scripts, and translating an experimentally tested local setup into a reusable public repository. The technical procedures here should still be treated as practical research tooling, not as an official JPEG AI distribution.
+
 ## What this repository provides
 
 ```text
